@@ -5,10 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Nikolay_Yakov_employees"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        ResizeMode="NoResize">
     <Grid>
         <Border BorderBrush="Black" BorderThickness="1">
-            <Button x:Name="PickFile" Content="Pick File" Margin="215,151,215,150" Click="PickFile_Click"/>
+            <Button x:Name="PickFile" Content="Pick File" Margin="301,9,301,374" Click="PickFile_Click"/>
         </Border>
+        <DataGrid Name="DG1" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="216,66,216,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Employee ID #1"  Binding="{Binding EmpAID}"/>
+                <DataGridTextColumn Header="Employee ID #2" Binding="{Binding EmpBID}" />
+                <DataGridTextColumn Header="Project ID" Binding="{Binding ProjectID}"/>
+                <DataGridTextColumn Header="Days worked" Binding="{Binding DaysWorkedTogether}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

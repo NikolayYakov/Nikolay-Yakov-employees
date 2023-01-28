@@ -2,6 +2,7 @@
 using Nikolay_Yakov_employees.Data;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -44,15 +45,24 @@ namespace Nikolay_Yakov_employees
                 {
                     commonProjectsEmployees.AddRange(GetPairs(employeesToProject.ToList(), employeesToProject.Key));
                 }
-                var mostTimeSameProject =  commonProjectsEmployees.OrderByDescending(x => x.DaysWorkedTogether).FirstOrDefault();
+                var orderedList = commonProjectsEmployees.OrderByDescending(x => x.DaysWorkedTogether);
+                var mostTimeSameProject = orderedList.FirstOrDefault();
+
+                ShowResult(mostTimeSameProject);
+
+                ObservableCollection<CommonProjectEmployees> commonEmployees = new ObservableCollection<CommonProjectEmployees>(orderedList);
+                DG1.DataContext = commonEmployees;
 
             }
             catch(Exception ex)
             {
+                string caption = "Error!";
+                MessageBoxButton button = MessageBoxButton.OK;
+                MessageBoxImage icon = MessageBoxImage.Error;
+                MessageBoxResult result;
 
+                result = MessageBox.Show(ex.Message, caption, button, icon, MessageBoxResult.Yes);
             }
-            
- 
         }
 
         private List<Employee> ReadCsvFile(string path)
@@ -84,6 +94,30 @@ namespace Nikolay_Yakov_employees
                 }
             }
             return employeesCommonProjects;
+        }
+
+        private void ShowResult(CommonProjectEmployees? mostTimeSameProject)
+        {
+            MessageBoxButton button = MessageBoxButton.OK;
+            MessageBoxImage icon = MessageBoxImage.Information;
+
+            string messageBoxText;
+            string caption;
+
+            if (mostTimeSameProject != null)
+            {
+                messageBoxText = $"Employees {mostTimeSameProject.EmpAID} and {mostTimeSameProject.EmpBID} have worked together the most: {mostTimeSameProject.DaysWorkedTogether} days." +
+                                     $" They worked on project {mostTimeSameProject.ProjectID}";
+                caption = "Employees working together the most.";  
+            }
+            else
+            {
+                messageBoxText = "There are not a pair of employees who worked together on the same project.";
+                caption = "no result";
+            }
+           
+
+            MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
         }
 
     }
